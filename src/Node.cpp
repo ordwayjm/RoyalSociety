@@ -15,3 +15,8 @@ void Node::insertAfter(Node* node, Window* window)
 	node->next_ = newNode;
 }
 
+void remove(Window* remove_here) 
+{
+	delete remove_here;
+}
+

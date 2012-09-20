@@ -39,8 +39,8 @@ void RoyalSocietyApp::update()
 {
 	if(leftClicked_)
 	{
-		Window newWindow = Window::Window(mousePos_, 400, 300, Color8u(255, 255, 255));
-		sentinel_->insertAfter(Node(), newWindow);
+		Window* newWindow = new Window(mousePos_, 400, 300, Color8u(255, 255, 255));
+		sentinel_->insertAfter(new Node(), newWindow);
 	}
 }
 

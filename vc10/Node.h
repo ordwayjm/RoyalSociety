@@ -1,5 +1,6 @@
 #include "Window.h"
 
+
 class Node
 {
 	public:
@@ -11,5 +12,7 @@ class Node
 
 		Node();
 		void insertAfter(Node* node, Window* newWindow);
+		void remove(Node* remove_here);
+		void reverse(Node* sentinel);
 };
 

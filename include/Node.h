@@ -9,7 +9,7 @@ class Node
 
 		Window* window_;
 
-		Node::Node();
-		void Node::insertAfter(Node* node, Window* newWindow);
+		Node();
+		void insertAfter(Node* node, Window* newWindow);
 };
 
