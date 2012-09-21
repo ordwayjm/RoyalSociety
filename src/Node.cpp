@@ -1,22 +1,52 @@
 #include "Node.h"
 
-Node::Node()
+Node::Node(void)
 {
 	next_ = this;
 	prev_ = next_;
 }
 
-void Node::insertAfter(Node* node, Window* window)
+Node::Node(Node* next, Node* prev, Window* window)
 {
-	Node* newNode = new Node;
-	newNode->window_ = window;
-	newNode->next_ = node->next_;
-	newNode->prev_ = node;
-	node->next_ = newNode;
+	next_ = next;
+	prev_ = prev;
+	window_ = window;
 }
 
-void remove(Window* remove_here) 
+void Node::insertAfter(Node* nodeAt, Window* newWindow)
+{
+	Node* nextNode = nodeAt->next_;
+	Node* tmp = new Node(nextNode, nodeAt, newWindow);
+	nodeAt->next_ = tmp;
+	nextNode->prev_ = tmp;
+}
+
+void Node::insertBefore(Node* node, Window* newWindow)
+{
+	Node* previousNode = node->prev_;
+	Node* tmp = new Node(node, previousNode, newWindow);
+	node->prev_ = tmp;
+	previousNode->next_ = tmp;
+}
+
+void Node::remove(Node* remove_here) 
 {
 	delete remove_here;
+}
+
+// doubly linked circular
+void Node::reverse(Node* sentinel)
+{
+	Node* tmp;
+	Node* cur = sentinel;
+	do
+	{
+		tmp = cur->next_;
+		cur->next_ = cur->prev_;
+		cur->prev_ = tmp;
+		
+		// go to next node in list
+		cur = cur->prev_;
+	} while(cur != sentinel);
 }
 

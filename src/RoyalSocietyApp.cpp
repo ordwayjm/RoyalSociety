@@ -8,9 +8,6 @@ using namespace std;
 
 class RoyalSocietyApp : public AppBasic {
   public:
-	
-	Vec2i mousePos_;
-	bool leftClicked_;
 
 	void setup();
 	void mouseDown(MouseEvent event);	
@@ -20,13 +17,24 @@ class RoyalSocietyApp : public AppBasic {
   private:
 	
 	Node* sentinel_;			// starting empty node
+	
+	Vec2i mousePos_;
+	bool leftClicked_;
 
+	Window* window1;
+	Window* window2;
 };
 
 void RoyalSocietyApp::setup()
 {
 	sentinel_ = new Node();		// start cicular link list
 	leftClicked_ = false;
+
+	window1 = new Window(Vec2i(50, 50), 400, 300, Color8u(255, 255, 0));
+	window2 = new Window(Vec2i(100, 150), 150, 400, Color8u(0, 255, 255));
+
+	sentinel_->insertAfter(sentinel_, window1);
+	sentinel_->insertAfter(sentinel_, window2);
 }
 
 void RoyalSocietyApp::mouseDown( MouseEvent event )
@@ -37,19 +45,17 @@ void RoyalSocietyApp::mouseDown( MouseEvent event )
 
 void RoyalSocietyApp::update()
 {
-	if(leftClicked_)
-	{
-		Window* newWindow = new Window(mousePos_, 400, 300, Color8u(255, 255, 255));
-		sentinel_->insertAfter(new Node(), newWindow);
-	}
+	
 }
 
 void RoyalSocietyApp::draw()
 {
 	Node* cur = sentinel_->next_;
-	while(cur != sentinel_) 
+	while(cur != sentinel_)
 	{
 		cur->window_->draw();
+
+		// go to next node in list
 		cur = cur->next_;
 	}
 }

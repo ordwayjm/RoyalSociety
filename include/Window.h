@@ -16,7 +16,7 @@ class Window
 		
 		bool move_;
 		
-		Window();
+		Window(void);
 		Window(Vec2i pos, int width, int height, Color8u color);
 		void update();
 		void draw();
