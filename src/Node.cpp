@@ -21,12 +21,22 @@ void Node::insertAfter(Node* nodeAt, Window* newWindow)
 	nextNode->prev_ = tmp;
 }
 
-void Node::insertBefore(Node* node, Window* newWindow)
+void Node::insertBefore(Node* nodeAt, Window* newWindow)
 {
-	Node* previousNode = node->prev_;
-	Node* tmp = new Node(node, previousNode, newWindow);
-	node->prev_ = tmp;
-	previousNode->next_ = tmp;
+	Node* prevNode = nodeAt->prev_;
+	Node* tmp = new Node(nodeAt, prevNode, newWindow);
+	nodeAt->prev_ = tmp;
+	prevNode->next_ = tmp;
+}
+
+void Node::moveBefore(Node* nodeToMove, Node* nodeAt)
+{
+
+}
+
+void Node::moveAfter(Node* nodeToMove, Node* nodeAt)
+{
+
 }
 
 void Node::remove(Node* remove_here) 
@@ -44,8 +54,6 @@ void Node::reverse(Node* sentinel)
 		tmp = cur->next_;
 		cur->next_ = cur->prev_;
 		cur->prev_ = tmp;
-		
-		// go to next node in list
 		cur = cur->prev_;
 	} while(cur != sentinel);
 }

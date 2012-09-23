@@ -20,43 +20,50 @@ class RoyalSocietyApp : public AppBasic {
 	
 	Vec2i mousePos_;
 	bool leftClicked_;
-
-	Window* window1;
-	Window* window2;
+	bool rightClicked_;
 };
 
 void RoyalSocietyApp::setup()
 {
 	sentinel_ = new Node();		// start cicular link list
 	leftClicked_ = false;
-
-	window1 = new Window(Vec2i(50, 50), 400, 300, Color8u(255, 255, 0));
-	window2 = new Window(Vec2i(100, 150), 150, 400, Color8u(0, 255, 255));
-
-	sentinel_->insertAfter(sentinel_, window1);
-	sentinel_->insertAfter(sentinel_, window2);
+	rightClicked_ = false;
 }
 
-void RoyalSocietyApp::mouseDown( MouseEvent event )
+void RoyalSocietyApp::mouseDown(MouseEvent event)
 {
 	mousePos_ = event.getPos();
-	leftClicked_ = true;
+	rightClicked_ = event.isRightDown();
+	leftClicked_ = event.isLeftDown();
 }
 
 void RoyalSocietyApp::update()
 {
-	
+	if(leftClicked_)
+	{
+		leftClicked_ = false;
+		int r = rand()%255;
+		int g = rand()%255;
+		int b = rand()%255;
+		Window* window = new Window(mousePos_, 400, 300, Color8u(r, g, b));
+		sentinel_->insertBefore(sentinel_->next_, window); 
+		window = 0;
+	}
+	else if(rightClicked_) 
+	{
+		rightClicked_ = false;
+		sentinel_->reverse(sentinel_);	
+	}
 }
 
 void RoyalSocietyApp::draw()
 {
-	Node* cur = sentinel_->next_;
+	gl::clear(Color8u(0,0,0));
+	Node* cur = sentinel_->prev_;
 	while(cur != sentinel_)
 	{
 		cur->window_->draw();
-
-		// go to next node in list
-		cur = cur->next_;
+		cur = cur->prev_;
 	}
 }
 

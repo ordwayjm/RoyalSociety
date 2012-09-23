@@ -20,4 +20,5 @@ class Window
 		Window(Vec2i pos, int width, int height, Color8u color);
 		void update();
 		void draw();
+		bool isInside(Vec2i pos);
 };
