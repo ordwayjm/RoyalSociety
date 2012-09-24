@@ -1,5 +1,7 @@
 #include "cinder/app/AppBasic.h"
 #include "cinder/gl/gl.h"
+#include "cinder/ImageIo.h"
+#include "cinder/gl/Texture.h"
 #include "Node.h"
 
 using namespace ci;
@@ -7,7 +9,7 @@ using namespace ci::app;
 using namespace std;
 
 class RoyalSocietyApp : public AppBasic {
-  public:
+public:
 
 	void setup();
 	void mouseDown(MouseEvent event);	
@@ -17,6 +19,7 @@ class RoyalSocietyApp : public AppBasic {
   private:
 	
 	Node* sentinel_;			// starting empty node
+	gl::Texture texture;
 	
 	Vec2i mousePos_;
 	bool leftClicked_;
@@ -25,6 +28,7 @@ class RoyalSocietyApp : public AppBasic {
 
 void RoyalSocietyApp::setup()
 {
+	texture = loadImage("../resources/win95.png");
 	sentinel_ = new Node();		// start cicular link list
 	leftClicked_ = false;
 	rightClicked_ = false;
@@ -45,7 +49,7 @@ void RoyalSocietyApp::update()
 		int r = rand()%255;
 		int g = rand()%255;
 		int b = rand()%255;
-		Window* window = new Window(mousePos_, 400, 300, Color8u(r, g, b));
+		Window* window = new Window(mousePos_, texture);
 		sentinel_->insertBefore(sentinel_->next_, window); 
 		window = 0;
 	}

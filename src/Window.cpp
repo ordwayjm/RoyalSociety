@@ -1,11 +1,9 @@
 #include "Window.h"
 
-Window::Window(Vec2i pos, int width, int height, Color8u color) 
+Window::Window(Vec2i pos, gl::Texture texture) 
 {
 	pos_ = pos;
-	width_ = width;
-	height_ = height;
-	color_ = color;
+	texture_ = texture;
 }
 
 Window::Window(void)
@@ -19,6 +17,7 @@ bool Window::isInside(Vec2i pos)
 
 void Window::draw()
 {
-	gl::color(color_);
-	gl::drawSolidRect(Rectf(pos_.x,pos_.y,pos_.x+width_,pos_.y+height_));
+	if(texture_)
+		gl::draw(texture_, pos_);
+	//gl::drawSolidRect(Rectf(pos_.x,pos_.y,pos_.x+width_,pos_.y+height_));
 }
