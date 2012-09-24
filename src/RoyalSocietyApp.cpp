@@ -40,6 +40,9 @@ public:
 	Button* helpButton_;
 	Button* newWinButton_;
 	Button* reverseButton_;
+	Button* leftButton_;
+	Button* rightButton_;
+	Button* deleteButton_;
 	
 	Vec2i mousePos_;
 	bool leftClicked_;
@@ -54,10 +57,16 @@ void RoyalSocietyApp::setup()
 	gl::Texture helpTexture = loadImage("../resources/help.png");
 	gl::Texture newWinTexture = loadImage("../resources/newWindow.png");
 	gl::Texture reverseTexture = loadImage("../resources/reverse.png");
+	gl::Texture leftTexture = loadImage("../resources/left.png");
+	gl::Texture rightTexture = loadImage("../resources/right.png");
+	gl::Texture deleteTexture = loadImage("../resources/delete.png");
 
 	helpButton_ = new Button(helpTexture, Vec2i(15, 15), 50, 50);
 	newWinButton_ = new Button(newWinTexture, Vec2i(75, 15), 50, 50);
 	reverseButton_ = new Button(reverseTexture, Vec2i(135, 15), 50, 50);
+	leftButton_ = new Button(leftTexture, Vec2i(195, 15), 50, 50);
+	rightButton_ = new Button(rightTexture, Vec2i(255, 15), 50, 50);
+	deleteButton_ = new Button(deleteTexture, Vec2i(315, 15), 50, 50);
 
 	sentinel_ = new Node();		// start cicular link list
 	leftClicked_ = false;
@@ -114,6 +123,19 @@ void RoyalSocietyApp::update()
 		{
 			sentinel_->reverse(sentinel_);
 		}
+		if(leftButton_->isInside(mousePos_))
+		{
+			sentinel_->moveLeft(sentinel_->prev_);
+		}
+		if(rightButton_->isInside(mousePos_))
+		{
+			sentinel_->moveRight(sentinel_->next_);
+		}
+		if(deleteButton_->isInside(mousePos_))
+		{
+			if(sentinel_ != sentinel_->next_)
+				sentinel_->remove(sentinel_->next_);
+		}
 	}
 }
 
@@ -131,6 +153,9 @@ void RoyalSocietyApp::draw()
 	helpButton_->draw();
 	newWinButton_->draw();
 	reverseButton_->draw();
+	leftButton_->draw();
+	rightButton_->draw();
+	deleteButton_->draw();
 }
 
 CINDER_APP_BASIC(RoyalSocietyApp, RendererGl)

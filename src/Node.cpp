@@ -29,6 +29,28 @@ void Node::insertBefore(Node* nodeAt, Window* newWindow)
 	prevNode->next_ = tmp;
 }
 
+void Node::moveLeft(Node* nodeAt)
+{
+		Node* swapTarget = nodeAt->next_;
+		nodeAt->next_ = swapTarget->next_;
+		swapTarget->prev_ = nodeAt->prev_;
+		nodeAt->prev_ = swapTarget;
+		swapTarget->next_ = nodeAt;
+		nodeAt->next_->prev_ = nodeAt;
+		swapTarget->prev_->next_ = swapTarget;
+}
+
+void Node::moveRight(Node* nodeAt)
+{
+		Node* swapTarget = nodeAt->prev_;
+		nodeAt->prev_ = swapTarget->prev_;
+		swapTarget->next_ = nodeAt->next_;
+		nodeAt->next_ = swapTarget;
+		swapTarget->prev_ = nodeAt;
+		nodeAt->prev_->next_ = nodeAt;
+		swapTarget->next_->prev_ = swapTarget;
+}
+
 void Node::remove(Node* remove_here) 
 {
 	remove_here->prev_->next_ = remove_here->next_;

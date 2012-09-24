@@ -14,8 +14,8 @@ class Node
 		
 		void insertAfter(Node* nodeAt, Window* newWindow);
 		void insertBefore(Node* nodeAt, Window* newWindow);
-		void moveAfter(Node* nodeToMove, Node* nodeAt);
-		void moveBefore(Node* nodeToMove, Node* nodeAt);
+		void moveLeft(Node* nodeAt);
+		void moveRight(Node* nodeAt);
 		void remove(Node* remove_here);
 		void reverse(Node* sentinel);
 };
