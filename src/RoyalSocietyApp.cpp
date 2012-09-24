@@ -28,6 +28,7 @@ public:
 
 	void setup();
 	void mouseDown(MouseEvent event);	
+	void keyDown(KeyEvent event);
 	void update();
 	void draw();
 
@@ -43,6 +44,8 @@ public:
 	Vec2i mousePos_;
 	bool leftClicked_;
 	bool rightClicked_;
+
+	int moveSpeed_;
 };
 
 void RoyalSocietyApp::setup()
@@ -59,6 +62,8 @@ void RoyalSocietyApp::setup()
 	sentinel_ = new Node();		// start cicular link list
 	leftClicked_ = false;
 	rightClicked_ = false;
+
+	moveSpeed_ = 5;
 }
 
 void RoyalSocietyApp::mouseDown(MouseEvent event)
@@ -66,6 +71,28 @@ void RoyalSocietyApp::mouseDown(MouseEvent event)
 	mousePos_ = event.getPos();
 	rightClicked_ = event.isRightDown();
 	leftClicked_ = event.isLeftDown();
+}
+
+void RoyalSocietyApp::keyDown(KeyEvent event) {
+	if(sentinel_->next_ != sentinel_)
+	{
+		if(event.getCode() == KeyEvent::KEY_RIGHT || event.getChar() == 'd')
+		{
+			sentinel_->next_->window_->pos_.x += moveSpeed_;
+		}
+		else if(event.getCode() == KeyEvent::KEY_LEFT || event.getChar() == 'a')
+		{
+			sentinel_->next_->window_->pos_.x -= moveSpeed_;
+		}
+		else if(event.getCode() == KeyEvent::KEY_UP || event.getChar() == 'w')
+		{
+			sentinel_->next_->window_->pos_.y -= moveSpeed_;
+		}
+		else if(event.getCode() == KeyEvent::KEY_DOWN || event.getChar() == 's')
+		{
+			sentinel_->next_->window_->pos_.y += moveSpeed_;
+		}
+	}
 }
 
 void RoyalSocietyApp::update()
