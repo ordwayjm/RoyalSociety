@@ -13,6 +13,9 @@ Node::Node(Node* next, Node* prev, Window* window)
 	window_ = window;
 }
 
+/*
+	Creates a new node and inserts it after passed node in the list
+*/
 void Node::insertAfter(Node* nodeAt, Window* newWindow)
 {
 	Node* nextNode = nodeAt->next_;
@@ -21,6 +24,9 @@ void Node::insertAfter(Node* nodeAt, Window* newWindow)
 	nextNode->prev_ = tmp;
 }
 
+/*
+	Creates a new node and inserts it before passed node in the list
+*/
 void Node::insertBefore(Node* nodeAt, Window* newWindow)
 {
 	Node* prevNode = nodeAt->prev_;
@@ -29,28 +35,37 @@ void Node::insertBefore(Node* nodeAt, Window* newWindow)
 	prevNode->next_ = tmp;
 }
 
+/*
+	Moves targeted node to the back of the list
+*/
 void Node::moveLeft(Node* nodeAt)
 {
-		Node* swapTarget = nodeAt->next_;
-		nodeAt->next_ = swapTarget->next_;
-		swapTarget->prev_ = nodeAt->prev_;
-		nodeAt->prev_ = swapTarget;
-		swapTarget->next_ = nodeAt;
+		Node* target = nodeAt->next_;
+		nodeAt->next_ = target->next_;
+		target->prev_ = nodeAt->prev_;
+		nodeAt->prev_ = target;
+		target->next_ = nodeAt;
 		nodeAt->next_->prev_ = nodeAt;
-		swapTarget->prev_->next_ = swapTarget;
+		target->prev_->next_ = target;
 }
 
+/*
+	Moves targeted node to the front of the list
+*/
 void Node::moveRight(Node* nodeAt)
 {
-		Node* swapTarget = nodeAt->prev_;
-		nodeAt->prev_ = swapTarget->prev_;
-		swapTarget->next_ = nodeAt->next_;
-		nodeAt->next_ = swapTarget;
-		swapTarget->prev_ = nodeAt;
+		Node* target = nodeAt->prev_;
+		nodeAt->prev_ = target->prev_;
+		target->next_ = nodeAt->next_;
+		nodeAt->next_ = target;
+		target->prev_ = nodeAt;
 		nodeAt->prev_->next_ = nodeAt;
-		swapTarget->next_->prev_ = swapTarget;
+		target->next_->prev_ = target;
 }
 
+/*
+	Removes selected node from list
+*/
 void Node::remove(Node* remove_here) 
 {
 	remove_here->prev_->next_ = remove_here->next_;
@@ -58,6 +73,9 @@ void Node::remove(Node* remove_here)
 	delete remove_here;
 }
 
+/*
+	Reverses the order of the list
+*/
 void Node::reverse(Node* sentinel)
 {
 	Node* tmp;

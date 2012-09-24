@@ -6,8 +6,9 @@
  *	HW02 - RoyalSociety
  *	Satisfies:
  *		A - Implements a Circular, Doubly-Linked List
- *		B - Controls are displayed by pressing the '?' key
- *		C - Items can be reordered using the mouse
+ *		B - Controls are displayed by pressing the '?' key/button
+ *		C - Items can be reordered using top buttons
+ *		D - Items can be moved using WASD/Arrow Keys
  *		E - Reverses the order of the list
  *
  */
@@ -34,9 +35,10 @@ public:
 
   private:
 	
-	Node* sentinel_;			// starting empty node
+	Node* sentinel_;
 	
 	gl::Texture winTexture_;
+	
 	Button* helpButton_;
 	Button* newWinButton_;
 	Button* reverseButton_;
@@ -45,15 +47,16 @@ public:
 	Button* deleteButton_;
 	
 	Vec2i mousePos_;
+	
 	bool leftClicked_;
-	bool rightClicked_;
-
+	bool help_;
 	int moveSpeed_;
 };
 
 void RoyalSocietyApp::setup()
 {
 	winTexture_ = loadImage("../resources/window.png");
+	
 	gl::Texture helpTexture = loadImage("../resources/help.png");
 	gl::Texture newWinTexture = loadImage("../resources/newWindow.png");
 	gl::Texture reverseTexture = loadImage("../resources/reverse.png");
@@ -69,22 +72,34 @@ void RoyalSocietyApp::setup()
 	deleteButton_ = new Button(deleteTexture, Vec2i(315, 15), 50, 50);
 
 	sentinel_ = new Node();		// start cicular link list
+	
 	leftClicked_ = false;
-	rightClicked_ = false;
-
+	help_ = true;
 	moveSpeed_ = 5;
 }
 
+/*
+	Checks for mouse input/position from the user
+*/
 void RoyalSocietyApp::mouseDown(MouseEvent event)
 {
 	mousePos_ = event.getPos();
-	rightClicked_ = event.isRightDown();
 	leftClicked_ = event.isLeftDown();
 }
 
+/*
+	Checks for keyboard input from the user, also moves currently selected window
+*/
 void RoyalSocietyApp::keyDown(KeyEvent event) {
+	if(event.getChar() == '?')
+	{
+		if(help_)
+			help_ = false;
+		else help_ = true;
+	}
 	if(sentinel_->next_ != sentinel_)
 	{
+		// check for key input and move window accordingly
 		if(event.getCode() == KeyEvent::KEY_RIGHT || event.getChar() == 'd')
 		{
 			sentinel_->next_->window_->pos_.x += moveSpeed_;
@@ -109,9 +124,12 @@ void RoyalSocietyApp::update()
 	if(leftClicked_)
 	{
 		leftClicked_ = false;
+		// check for button presses
 		if(helpButton_->isInside(mousePos_))
 		{
-
+			if(help_)
+				help_ = false;
+			else help_ = true;
 		}
 		if(newWinButton_->isInside(mousePos_))
 		{
@@ -141,7 +159,14 @@ void RoyalSocietyApp::update()
 
 void RoyalSocietyApp::draw()
 {
-	gl::clear(Color8u(0,0,0));
+	gl::clear(Color8u(0,0,0));		// clear screen on each update
+	
+	if (help_)
+	{
+		gl::drawString("Click the menu buttons to perform actions on the Linked List\n\nBUTTON COMMANDS (Left to Right):\nToggle Help Menu\nNew Window\nReverse List\nMove Backward in List\nMove Forward in List\nDelete Selected Window\n\nCONTROLS:\nW - Move Current Node Position Up\nS - Move Current Node Position Down\nA - Move Current Node Position Left\nD - Move Current Node Position Right\n? - Toggle Help Menu", Vec2i(15,70), Color8u(255,255,255), Font("Helvetica", 25));
+	}
+
+	// loop through each node
 	Node* cur = sentinel_->prev_;
 	while(cur != sentinel_)
 	{

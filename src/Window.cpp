@@ -10,6 +10,9 @@ Window::Window(Vec2i pos, gl::Texture texture)
 	texture_ = texture;
 }
 
+/*
+	Checks if mouse position is currently inside the window
+*/
 bool Window::isInside(Vec2i pos)
 {
 	Rectf* rect = new Rectf(pos_.x, pos_.y, pos_.x + texture_.getWidth(), pos_.y + texture_.getHeight());
