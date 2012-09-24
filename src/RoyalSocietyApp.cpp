@@ -1,7 +1,22 @@
+/*
+ *	Justin Ordway
+ *	CSE 274 A
+ *	9/24/2012
+ *
+ *	HW02 - RoyalSociety
+ *	Satisfies:
+ *		A - Implements a Circular, Doubly-Linked List
+ *		B - Controls are displayed by pressing the '?' key
+ *		C - Items can be reordered using the mouse
+ *		E - Reverses the order of the list
+ *
+ */
+
 #include "cinder/app/AppBasic.h"
 #include "cinder/gl/gl.h"
 #include "cinder/ImageIo.h"
 #include "cinder/gl/Texture.h"
+#include "Button.h"
 #include "Node.h"
 
 using namespace ci;
@@ -19,7 +34,11 @@ public:
   private:
 	
 	Node* sentinel_;			// starting empty node
-	gl::Texture texture;
+	
+	gl::Texture winTexture_;
+	Button* helpButton_;
+	Button* newWinButton_;
+	Button* reverseButton_;
 	
 	Vec2i mousePos_;
 	bool leftClicked_;
@@ -28,7 +47,15 @@ public:
 
 void RoyalSocietyApp::setup()
 {
-	texture = loadImage("../resources/win95.png");
+	winTexture_ = loadImage("../resources/window.png");
+	gl::Texture helpTexture = loadImage("../resources/help.png");
+	gl::Texture newWinTexture = loadImage("../resources/newWindow.png");
+	gl::Texture reverseTexture = loadImage("../resources/reverse.png");
+
+	helpButton_ = new Button(helpTexture, Vec2i(15, 15), 50, 50);
+	newWinButton_ = new Button(newWinTexture, Vec2i(75, 15), 50, 50);
+	reverseButton_ = new Button(reverseTexture, Vec2i(135, 15), 50, 50);
+
 	sentinel_ = new Node();		// start cicular link list
 	leftClicked_ = false;
 	rightClicked_ = false;
@@ -46,17 +73,20 @@ void RoyalSocietyApp::update()
 	if(leftClicked_)
 	{
 		leftClicked_ = false;
-		int r = rand()%255;
-		int g = rand()%255;
-		int b = rand()%255;
-		Window* window = new Window(mousePos_, texture);
-		sentinel_->insertBefore(sentinel_->next_, window); 
-		window = 0;
-	}
-	else if(rightClicked_) 
-	{
-		rightClicked_ = false;
-		sentinel_->reverse(sentinel_);	
+		if(helpButton_->isInside(mousePos_))
+		{
+
+		}
+		if(newWinButton_->isInside(mousePos_))
+		{
+			Window* window = new Window(Vec2i(120, 100), winTexture_);
+			sentinel_->insertBefore(sentinel_->next_, window); 
+			window = 0;
+		}
+		if(reverseButton_->isInside(mousePos_))
+		{
+			sentinel_->reverse(sentinel_);
+		}
 	}
 }
 
@@ -69,6 +99,11 @@ void RoyalSocietyApp::draw()
 		cur->window_->draw();
 		cur = cur->prev_;
 	}
+	
+	// draw buttons on top
+	helpButton_->draw();
+	newWinButton_->draw();
+	reverseButton_->draw();
 }
 
 CINDER_APP_BASIC(RoyalSocietyApp, RendererGl)

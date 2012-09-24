@@ -1,23 +1,23 @@
 #include "Window.h"
 
+Window::Window(void)
+{
+}
+
 Window::Window(Vec2i pos, gl::Texture texture) 
 {
 	pos_ = pos;
 	texture_ = texture;
 }
 
-Window::Window(void)
-{
-}
-
 bool Window::isInside(Vec2i pos)
 {
-	return true;
+	Rectf* rect = new Rectf(pos_.x, pos_.y, pos_.x + texture_.getWidth(), pos_.y + texture_.getHeight());
+	return rect->contains(pos);
 }
 
 void Window::draw()
 {
 	if(texture_)
 		gl::draw(texture_, pos_);
-	//gl::drawSolidRect(Rectf(pos_.x,pos_.y,pos_.x+width_,pos_.y+height_));
 }

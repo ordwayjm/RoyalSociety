@@ -29,22 +29,13 @@ void Node::insertBefore(Node* nodeAt, Window* newWindow)
 	prevNode->next_ = tmp;
 }
 
-void Node::moveBefore(Node* nodeToMove, Node* nodeAt)
-{
-
-}
-
-void Node::moveAfter(Node* nodeToMove, Node* nodeAt)
-{
-
-}
-
 void Node::remove(Node* remove_here) 
 {
+	remove_here->prev_->next_ = remove_here->next_;
+	remove_here->next_->prev_ = remove_here->prev_;
 	delete remove_here;
 }
 
-// doubly linked circular
 void Node::reverse(Node* sentinel)
 {
 	Node* tmp;
