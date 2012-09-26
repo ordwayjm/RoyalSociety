@@ -16,50 +16,71 @@ Node::Node(Node* next, Node* prev, Window* window)
 /*
 	Creates a new node and inserts it after passed node in the list
 */
-void Node::insertAfter(Node* nodeAt, Window* newWindow)
+
+//Matt: I changed the name "nodeAt" to "currentNode".  This is a bit less
+//confusing of an identifier.
+void Node::insertAfter(Node* currentNode, Window* newWindow)
 {
-	Node* nextNode = nodeAt->next_;
-	Node* tmp = new Node(nextNode, nodeAt, newWindow);
-	nodeAt->next_ = tmp;
+	Node* nextNode = currentNode->next_;
+	Node* tmp = new Node(nextNode, currentNode, newWindow);
+	currentNode->next_ = tmp;
 	nextNode->prev_ = tmp;
 }
 
 /*
 	Creates a new node and inserts it before passed node in the list
 */
-void Node::insertBefore(Node* nodeAt, Window* newWindow)
+
+//Matt: I changed the name "nodeAt" to "currentNode".  This is a bit less
+//confusing of an identifier.
+void Node::insertBefore(Node* currentNode, Window* newWindow)
 {
-	Node* prevNode = nodeAt->prev_;
-	Node* tmp = new Node(nodeAt, prevNode, newWindow);
-	nodeAt->prev_ = tmp;
+	Node* prevNode = currentNode->prev_;
+	Node* tmp = new Node(currentNode, prevNode, newWindow);
+	currentNode->prev_ = tmp;
 	prevNode->next_ = tmp;
 }
 
 /*
 	Moves targeted node to the back of the list
 */
-void Node::moveLeft(Node* nodeAt)
+
+/*
+	Matt:  I changed the name of this method to "moveToBack" because it is
+	a better descriptor of what the method does with your nodes.  Also, I 
+	changed the name "nodeAt" to "currentNode".  This is a bit less confusing
+	of an identifier.
+*/
+void Node::moveToBack(Node* currentNode)
 {
-		Node* target = nodeAt->next_;
-		nodeAt->next_ = target->next_;
-		target->prev_ = nodeAt->prev_;
-		nodeAt->prev_ = target;
-		target->next_ = nodeAt;
-		nodeAt->next_->prev_ = nodeAt;
+		Node* target = currentNode->next_;
+		currentNode->next_ = target->next_;
+		target->prev_ = currentNode->prev_;
+		currentNode->prev_ = target;
+		target->next_ = currentNode;
+		currentNode->next_->prev_ = currentNode;
 		target->prev_->next_ = target;
 }
 
 /*
 	Moves targeted node to the front of the list
 */
-void Node::moveRight(Node* nodeAt)
+
+/*
+	Matt:  I changed the name of this method to "moveToFront" because it is
+	a better descriptor of what the method does with your nodes. Also, I 
+	changed the name "nodeAt" to "currentNode".  This is a bit less confusing
+	of an identifier.
+*/
+
+void Node::moveToFront(Node* currentNode)
 {
-		Node* target = nodeAt->prev_;
-		nodeAt->prev_ = target->prev_;
-		target->next_ = nodeAt->next_;
-		nodeAt->next_ = target;
-		target->prev_ = nodeAt;
-		nodeAt->prev_->next_ = nodeAt;
+		Node* target = currentNode->prev_;
+		currentNode->prev_ = target->prev_;
+		target->next_ = currentNode->next_;
+		currentNode->next_ = target;
+		target->prev_ = currentNode;
+		currentNode->prev_->next_ = currentNode;
 		target->next_->prev_ = target;
 }
 

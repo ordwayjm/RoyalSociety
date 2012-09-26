@@ -6,6 +6,10 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
+
+// Matt: Be sure to put some documentation in your header files
+// so people reviewing your code know what is going on in here
+
 class Button
 {
 	public:

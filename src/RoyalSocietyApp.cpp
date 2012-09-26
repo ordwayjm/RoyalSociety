@@ -91,7 +91,9 @@ void RoyalSocietyApp::mouseDown(MouseEvent event)
 	Checks for keyboard input from the user, also moves currently selected window
 */
 void RoyalSocietyApp::keyDown(KeyEvent event) {
-	if(event.getChar() == '?')
+	// Matt: Added usage of the '/' key, because it's simpler to press
+	// one button than two!
+	if(event.getChar() == '?' || event.getChar() == '/')
 	{
 		if(help_)
 			help_ = false;
@@ -141,13 +143,28 @@ void RoyalSocietyApp::update()
 		{
 			sentinel_->reverse(sentinel_);
 		}
+
+		/*
+			Matt: For the left and right buttons, if there is only one window displayed,
+			the window is (seemingly) deleted.  This is probably due to your sentinel not
+			actually containing data.
+
+			The lines I added in the following two if statements check to see if there is 
+			only one other node besides the sentinel.  If this is the case (meaning both 
+			the next_ and prev_ of the current node will be pointing to the sentinel, the 
+			window will not (seemingly) delete itself when the moveToBack or moveToFront is called.
+		*/
 		if(leftButton_->isInside(mousePos_))
 		{
-			sentinel_->moveLeft(sentinel_->prev_);
+			// Matt: Note addition of following line
+			if(sentinel_->next_->prev_ != sentinel_ || sentinel_->next_->next_ != sentinel_)
+				sentinel_->moveToBack(sentinel_->prev_);
 		}
 		if(rightButton_->isInside(mousePos_))
 		{
-			sentinel_->moveRight(sentinel_->next_);
+			// Matt: Note addition of following line
+			if(sentinel_->next_->prev_ != sentinel_ || sentinel_->next_->next_ != sentinel_)
+				sentinel_->moveToFront(sentinel_->next_);
 		}
 		if(deleteButton_->isInside(mousePos_))
 		{
@@ -174,6 +191,8 @@ void RoyalSocietyApp::draw()
 		cur = cur->prev_;
 	}
 	
+	// Matt: This is good that the buttons draw last so they always stay on top
+
 	// draw buttons on top
 	helpButton_->draw();
 	newWinButton_->draw();
